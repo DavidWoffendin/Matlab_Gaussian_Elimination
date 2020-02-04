@@ -16,12 +16,26 @@ function U =  stage1(A)
         return
     end
     
-    for i = 1:n-1    
-        for j = k:n-1                                 
-            l = A(j+1,k)/A(k,k);                     
-            A(j+1,:) = A(j+1,:) - l*A(k,:);
+    for i = 1:n-1 % iterates through colums 1:n-1
+        for j = i+1:n % iterates through rows 1+1:n
+            if abs(A(i,i)) == 0 % implemented row swap to deal with 0 
+                                % values in the diaganol                                                                      
+                temp_row = A(i,:); % copys the top row
+                A(i,:) = A(j,:); % makes the top row equal to the lower row
+                A(j,:) = temp_row; % set the lower row equal to the top
+            end
         end
-        k = k + 1;
+        for j = k:n-1 % iterates between k and n-1                                 
+            l = A(j+1,k)/A(k,k); % calculates the common factor between the 
+                                 % two rows               
+            A(j+1,:) = A(j+1,:) - l*A(k,:); % the pivot row is multplied
+                                            % by the common factor to make
+                                            % it equal to the lower row
+                                            % this is then removed from the 
+                                            % lower row to make the 0 value
+        end
+        k = k + 1; % k is iterated by one to move onto the next colum 
+                   % diaganol
     end
     
     x = all(A == 0,2); % Checks each row for a 0 row
@@ -40,5 +54,5 @@ function U =  stage1(A)
         disp(y)
     end
     
-    U=A;
+    U=A; %Makes U = A
     
