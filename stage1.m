@@ -45,14 +45,21 @@ for i = 1:n % iterates through colums 1:n-1
     % diaganol
 end
 
+Anan = isnan(A); % Checks each row for a Nan row
+ynan = (sum(Anan(:)==0))/n; % Counts the number of none Nan rows
+
 x = all(A == 0,2); % Checks each row for a 0 row
 y = sum(x(:)==0);  % Counts the number of none 0 rows
 
-if y < m % Outputs the rank and 0 row information around the converted
+if (y < m) || (ynan < m) % Outputs the rank and 0 row information around the converted
     % matrix if number of none 0 rows is less then matrix size
     disp('Matrix contains a 0 row')
     disp('Matrix has a rank of:')
-    disp(y)
+    if y < m
+        disp(y)
+    elseif ynan < m
+        disp(ynan)
+    end
     disp('Matrix is rank deficient')
     return
 else
