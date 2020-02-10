@@ -25,21 +25,21 @@ end
 A = [A,b]; % creates the augmented matrix
 k = 1; % sets counter variable to 1
 
-for i = 1:n % iterates through colums 1:n-1
+for i = 1:n % iterates through columns 1:n-1
     for j = i+1:n %iterates through rows 1+1:n
         if abs(A(j,i)) > abs(A(i,i)) % implemented row swap to deal with 0
-            % values in the diaganol
+            % values in the diagonal
             temp_row = A(i,:); % copys the top row
             A(i,:) = A(j,:); % makes the top row equal to the lower row
             A(j,:) = temp_row; % set the lower row equal to the top
         end
     end
-    if abs(A(i,i)) <= 3.0198e-14 % if diaganol is less than tolerance
-        % set the diaganol to 0, needed to counter matlabs precision limits
+    if abs(A(i,i)) <= 3.0198e-14 % if diagonal is less than tolerance
+        % set the diagonal to 0, needed to counter matlabs precision limits
         A(i,i) = 0;
     end
-    if A(i,i) ~= 1 % if diaganol does not equal 1
-        A(i,:) = A(i,:)./A(i,i); % divide diaganol row by diaganol
+    if A(i,i) ~= 1 % if diagonal does not equal 1
+        A(i,:) = A(i,:)./A(i,i); % divide diagonal row by diagonal
     end
     for j = k:n-1 % iterates between k and n-1
         l = A(j+1,k)/A(k,k); % calculates the common factor between the
@@ -56,7 +56,7 @@ for i = 1:n % iterates through colums 1:n-1
         end
     end
     k = k + 1; % k is iterated by one to move onto the next colum
-    % diaganol
+    % diagonal
 end
 
 A
