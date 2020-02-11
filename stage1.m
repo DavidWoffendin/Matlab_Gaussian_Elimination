@@ -16,6 +16,18 @@ if nnz(A) == 0 % checks to see if matrix is full of 0's
     return
 end
 
+zc = all(A == 0,1); % Checks each row for a 0 row
+yc = sum(zc(:)==0);  % Counts the number of none 0 rows
+
+zr = all(A == 0,2); % Checks each row for a 0 row
+yr = sum(zr(:)==0);  % Counts the number of none 0 rows
+
+if (yc < m) || (yr < m)  % checks for 0 row and column in initial matrix
+    disp('Matrix contains a 0 row')
+    disp('Matrix is rank deficient')
+    return
+end
+
 for i = 1:n % iterates through columns 1:n-1
     if abs(A(i,i)) == 0 && i ~= n % implemented row swap to deal with 0
         % values in the diagonal
@@ -48,8 +60,8 @@ end
 Anan = isnan(A); % Checks each row for a Nan row
 ynan = (sum(Anan(:)==0))/n; % Counts the number of non Nan rows
 
-x = all(A == 0,2); % Checks each row for a 0 row
-y = sum(x(:)==0);  % Counts the number of none 0 rows
+z = all(A == 0,2); % Checks each row for a 0 row
+y = sum(z(:)==0);  % Counts the number of none 0 rows
 
 if (y < m) || (ynan < m) % Outputs the rank and 0 row information around the converted
     % matrix if number of none 0 rows is less then matrix size

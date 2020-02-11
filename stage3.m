@@ -15,6 +15,25 @@ if nnz(A) == 0 % checks to see if matrix is full of 0's
     return
 end
 
+zc = all(A == 0,1); % Checks each row for a 0 row
+yc = sum(zc(:)==0);  % Counts the number of none 0 rows
+
+zr = all(A == 0,2); % Checks each row for a 0 row
+yr = sum(zr(:)==0);  % Counts the number of none 0 rows
+
+if (yc < m) || (yr < m)  % checks for 0 row and column in initial matrix
+    disp('Matrix contains a 0 row')
+    disp('Matrix is rank deficient')
+    return
+end
+
+if iscolumn(b)
+    disp('b Tis not a compatible column vector with supplied matrix')
+    return
+else
+    disp('b Tis a compatible column vector with supplied matrix')
+end
+
 if (mb ~= m)
     disp('b Tis not a compatable size with supplied matrix')
     return
@@ -59,16 +78,15 @@ for i = 1:n % iterates through columns 1:n-1
     % diagonal
 end
 
-A
-
 Anan = isnan(A); % Checks each row for a Nan row
 ynan = (sum(Anan(:)==0))/n; % Counts the number of none Nan rows
 
 z = all(A == 0,2); % Checks each row for a 0 row
 y = sum(z(:)==0);  % Counts the number of none 0 rows
 
-if (y < m) || (ynan < m) % Outputs the rank and 0 row information around the converted
-    % matrix if number of none 0 rows is less then matrix size
+if (y < m) || (ynan < m) % Outputs the rank and 0 row information around 
+    % the converted matrix if number of none 0 rows is less then matrix
+    % size
     disp('Matrix contains a 0 row')
     disp('Matrix has a rank of:')
     if y < m
@@ -85,20 +103,19 @@ else
 end
 
 % begin backwards substitution
-% sets the lowest row with only one x value and simplifies it
+% gets the last row with only one x value and simplifies it
 x(n) = A(n,n+1)/A(n,n); % simple divides the solution value by the
-% x value
-% Iterates over the other rows using the original x value
+% x value and sets the answer to the soluction vector
+% Iterates over the other rows using the original x value from bottum up
 for i = n-1:-1:1
     counter = 0; % starts a counter
     for j = i+1:n % iterates over i+1 to n
         counter = counter + A(i,j)*x(j); % sets counter equal to value
-        % multiplied by previous x
-        % value
+        % multiplied by previous x value
     end
-    x(i) = (A(i,n+1)-counter)/A(i,i); % divides the solution value and
-    % and add the output to the
-    % vector x
+    x(i) = (A(i,n+1)-counter)/A(i,i); % divides the solution value minus 
+    % the counter by the diaganol and then adds the output to the soluction
+    % vector
 end
 x = x'; %rotates the vector
 end
