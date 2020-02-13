@@ -27,7 +27,7 @@ if (yc < m) || (yr < m)  % checks for 0 row and column in initial matrix
     return
 end
 
-if iscolumn(b)
+if (iscolumn(b) ~= 1)
     disp('b Tis not a compatible column vector with supplied matrix')
     return
 else
@@ -78,10 +78,13 @@ for i = 1:n % iterates through columns 1:n-1
     % diagonal
 end
 
-Anan = isnan(A); % Checks each row for a Nan row
+UnaugmentedA = A;
+UnaugmentedA(:,4) =  [];
+
+Anan = isnan(UnaugmentedA); % Checks each row for a Nan row
 ynan = (sum(Anan(:)==0))/n; % Counts the number of none Nan rows
 
-z = all(A == 0,2); % Checks each row for a 0 row
+z = all(UnaugmentedA == 0,2); % Checks each row for a 0 row
 y = sum(z(:)==0);  % Counts the number of none 0 rows
 
 if (y < m) || (ynan < m) % Outputs the rank and 0 row information around 
