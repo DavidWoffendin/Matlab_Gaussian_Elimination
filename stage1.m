@@ -35,10 +35,6 @@ for i = 1:n % iterates through columns 1:n-1
         A(i,:) = A(i+1,:); % makes the top row equal to the lower row
         A(i+1,:) = temp_row; % set the lower row equal to the top
     end
-    if abs(A(i,i)) <= 3.0198e-14 % if diagonal is less than tolerance
-        % set the diagonal to 0, needed to counter matlab's precision limits
-        A(i,i) = 0;
-    end
     for j = k:n-1 % iterates between k and n-1
         l = A(j+1,k)/A(k,k); % calculates the common factor between the
         % two rows
@@ -46,15 +42,20 @@ for i = 1:n % iterates through columns 1:n-1
         % by the common factor to make
         % it equal to the lower row
         % this is then removed from the
-        % lower row to make the 0 value
-        if abs(A(j+1,i)) <= 3.0198e-14 % checks current row value to see if
-            % it is less than tolerance, if it is it sets it to 0, used to
-            % counter matlab precision issues
-            A(j+1,i) = 0;
-        end
+        % lower row to make the 0 value        
     end
     k = k + 1; % k is iterated by one to move onto the next column
     % diagonal
+end
+
+for i = 1:n
+    for j = 1:n
+        if abs(A(j,i)) <= 5e-10 % checks current row value to see if
+            % it is less than tolerance, if it is it sets it to 0, used to
+            % counter matlab precision issues
+            A(j,i) = 0;
+        end
+    end
 end
 
 Anan = isnan(A); % Checks each row for a Nan row
@@ -66,18 +67,12 @@ y = sum(z(:)==0);  % Counts the number of none 0 rows
 if (y < m) || (ynan < m) % Outputs the rank and 0 row information around the converted
     % matrix if number of none 0 rows is less then matrix size
     disp('Matrix contains a 0 row')
-    disp('Matrix has a rank of:')
-    if y < m
-        disp(y)
-    elseif ynan < m
-        disp(ynan)
-    end
     disp('Matrix is rank deficient')
     return
 else
     disp('Matrix does not contain a 0 row')
-    disp('Matrix has a rank of:')
-    disp(y)
+    disp('Matrix is full rank')
 end
+
 
 U=A; %Makes U = A
